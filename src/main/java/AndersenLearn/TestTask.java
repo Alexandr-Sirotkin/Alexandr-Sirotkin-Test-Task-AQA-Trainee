@@ -1,22 +1,63 @@
 package AndersenLearn;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class TestTask {
+
+  private BufferedReader reader;
+
+  public String enterData() throws IOException {
+    if (reader == null) {
+      reader = new BufferedReader(new InputStreamReader(System.in));
+    }
+    return reader.readLine();
+  }
+
+  public void closeReader() {
+    try {
+      if (reader != null){
+        reader.close();
+      }
+    } catch (IOException e) {
+      System.out.println("Произошла ошибка во время операции ввода-вывода.");
+    }
+  }
+
+  public String convertFirstLetterToUppercase(String name) {
+    char[] letters = name.toCharArray();
+    letters[0] = Character.toUpperCase(letters[0]);
+    String nameString = "";
+    for (int i = 0; i < letters.length; i++) {
+      nameString += letters[i];
+    }
+    return nameString;
+  }
+
+  public int[] enterArray() throws IOException {
+    int length = Integer.parseInt(enterData());
+    int[] array = new int[length];
+    System.out.println("Введите элементы массива:");
+    for (int i = 0; i < length; i++) {
+      array[i] = Integer.parseInt(enterData());
+    }
+    return array;
+  }
 
   public void displayMessage() {
     System.out
         .println("1. Составить алгоритм: если введенное число больше 7, то вывести \"Привет\".");
     System.out.println("Введите число:");
     try {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-      int number = Integer.parseInt(reader.readLine());
+      double number = Double.parseDouble(enterData());
       if (number > 7) {
         System.out.println("Привет.");
       }
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (NumberFormatException e) {
+      System.out.println("Вы ввели не число.");
+    } catch (IOException e) {
+      System.out.println("Произошла ошибка во время операции ввода-вывода.");
     }
     System.out.println();
   }
@@ -26,15 +67,14 @@ public class TestTask {
         "2. Составить алгоритм: если введенное имя совпадает с Вячеслав, то вывести \"Привет, Вячеслав\", если нет, то вывести \"Нет такого имени\".");
     System.out.println("Введите имя:");
     try {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-      String name = reader.readLine();
-      if (name.equals("Вячеслав")) {
-        System.out.println("Привет, Вячеслав.");
+      String name = enterData().toLowerCase();
+      if (name.equals("вячеслав")) {
+        System.out.println("Привет, " + convertFirstLetterToUppercase(name) + ".");
       } else {
         System.out.println("Нет такого имени.");
       }
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (IOException e) {
+      System.out.println("Произошла ошибка во время операции ввода-вывода.");
     }
     System.out.println();
   }
@@ -44,16 +84,10 @@ public class TestTask {
         "3. Составить алгоритм: на входе есть числовой массив, необходимо вывести элементы массива кратные 3.");
     System.out.println("Введите длину массива:");
     try {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-      int length = Integer.parseInt(reader.readLine());
-      int[] array = new int[length];
-      System.out.println("Введите элементы массива:");
-      for (int i = 0; i < length; i++) {
-        array[i] = Integer.parseInt(reader.readLine());
-      }
+      int[] array = enterArray();
       System.out.println("Элементы массива кратные 3:");
       boolean noElementsDivisibleByThree = true;
-      for (int i = 0; i < length; i++) {
+      for (int i = 0; i < array.length; i++) {
         if (array[i] % 3 == 0) {
           System.out.println(array[i]);
           noElementsDivisibleByThree = false;
@@ -62,8 +96,12 @@ public class TestTask {
       if (noElementsDivisibleByThree) {
         System.out.println("Таких элементов нет.");
       }
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (NumberFormatException e) {
+      System.out.println("Длина массива и его элементы должны быть целыми числами.");
+    } catch (NegativeArraySizeException e) {
+      System.out.println("Длина массива не может быть отрицательной.");
+    } catch (IOException e) {
+      System.out.println("Произошла ошибка во время операции ввода-вывода.");
     }
     System.out.println();
   }
@@ -72,5 +110,6 @@ public class TestTask {
     this.displayMessage();
     this.compareNames();
     this.printArrayElementsMultiplesOfThree();
+    this.closeReader();
   }
 }
