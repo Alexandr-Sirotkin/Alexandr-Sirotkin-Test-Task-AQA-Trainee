@@ -17,7 +17,7 @@ public class TestTask {
 
   public void closeReader() {
     try {
-      if (reader != null){
+      if (reader != null) {
         reader.close();
       }
     } catch (IOException e) {
@@ -36,6 +36,7 @@ public class TestTask {
   }
 
   public int[] enterArray() throws IOException {
+    System.out.println("Введите длину массива:");
     int length = Integer.parseInt(enterData());
     int[] array = new int[length];
     System.out.println("Введите элементы массива:");
@@ -82,7 +83,6 @@ public class TestTask {
   public void printArrayElementsMultiplesOfThree() {
     System.out.println(
         "3. Составить алгоритм: на входе есть числовой массив, необходимо вывести элементы массива кратные 3.");
-    System.out.println("Введите длину массива:");
     try {
       int[] array = enterArray();
       System.out.println("Элементы массива кратные 3:");
